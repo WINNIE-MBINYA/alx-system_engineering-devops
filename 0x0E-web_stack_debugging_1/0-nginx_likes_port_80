@@ -1,0 +1,24 @@
+#!/bin/bash
+
+if ! command -v nginx &> /dev/null; then
+    echo "Nginx is not installed. Please install Nginx and try again."
+    exit 1
+fi
+
+nginx_conf="/etc/nginx/nginx.conf"
+if [ ! -f "$nginx_conf" ]; then
+    echo "Nginx configuration file not found: $nginx_conf"
+    exit 1
+fi
+
+if sudo netstat -tuln | grep ':80 ' &> /dev/null; then
+    echo "Nginx is already listening on port 80."
+    exit 0
+fi
+
+if ! grep -q 'listen\s\+80\s\+default_server;' "$nginx_conf"; then
+    sudo sed -i '/listen\s\+80\s\+default_server;/a \    listen 80 default_server;' "$nginx_conf"
+    echo "Added 'listen 80' configuration to Nginx."
+fi
+
+sudo service nginx restart
