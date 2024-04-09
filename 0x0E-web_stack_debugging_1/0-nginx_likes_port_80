@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 # This Bash script configures Nginx to return a web page and HTTP 200 on port 80
 
 # Check if Nginx is installed
