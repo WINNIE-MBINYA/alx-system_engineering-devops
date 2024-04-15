@@ -1,29 +1,25 @@
 #!/bin/bash
 
-# Check if ufw is installed
-if ! command -v ufw &>/dev/null; then
-    echo "ufw is not installed. Installing..."
-    sudo apt-get update
-    sudo apt-get install -y ufw
-fi
+# Install ufw if not already installed
+apt-get install -y ufw
 
 # Enable IPv6 support
-sudo sed -i 's/IPV6=.*/IPV6=yes/' /etc/default/ufw
+sed -i 's/IPV6=.*/IPV6=yes/' /etc/default/ufw
 
 # Disable ufw before making changes to ensure a clean start
-sudo ufw disable
+ufw disable
 
 # Enable ufw
-sudo ufw enable
+ufw enable
 
 # Set default policies
-sudo ufw default deny incoming
-sudo ufw default allow outgoing
+ufw default deny incoming
+ufw default allow outgoing
 
 # Allow incoming traffic on required ports
-sudo ufw allow ssh
-sudo ufw allow https
-sudo ufw allow http
+ufw allow 22/tcp
+ufw allow 443/tcp
+ufw allow 80/tcp
 
 # Reload ufw to apply changes
-sudo ufw reload
+ufw reload
