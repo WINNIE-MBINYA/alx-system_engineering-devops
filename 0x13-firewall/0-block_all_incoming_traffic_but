@@ -1,25 +1,28 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-# Install ufw if not already installed
-apt-get install -y ufw
+# Install ufw firewall
+apt-get install ufw -y
 
-# Enable IPv6 support
+# Enable IPv6 in ufw
 sed -i 's/IPV6=.*/IPV6=yes/' /etc/default/ufw
 
-# Disable ufw before making changes to ensure a clean start
-ufw disable
+# Disable ufw to apply changes
+ufw disable 
 
-# Enable ufw
+# Enable ufw to apply changes
 ufw enable
 
-# Set default policies
+# Set default incoming policy to deny
 ufw default deny incoming
+
+# Allow outgoing traffic
 ufw default allow outgoing
 
-# Allow incoming traffic on required ports
+# Allow SSH (port 22)
 ufw allow 22/tcp
-ufw allow 443/tcp
-ufw allow 80/tcp
 
-# Reload ufw to apply changes
-ufw reload
+# Allow HTTPS (port 443)
+ufw allow 443/tcp
+
+# Allow HTTP (port 80)
+ufw allow 80/tcp
