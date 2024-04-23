@@ -1,0 +1,11 @@
+#!/bin/bash
+# Loop through each file in the current directory
+for file in *; do
+    # Check if the file is a regular file and not hidden
+    if [ -f "$file" ] && [[ "$file" != .* ]]; then
+        # Extract the part of the name after the first dash
+        name=$(echo "$file" | cut -d '-' -f 2-)
+        # Print the extracted name
+        echo "$name"
+    fi
+done
