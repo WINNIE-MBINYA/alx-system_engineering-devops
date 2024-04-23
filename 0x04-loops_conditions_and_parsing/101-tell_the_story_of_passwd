@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# Read the /etc/passwd file line by line
+while IFS=: read -r username _ uid _ _ home shell; do
+    # Determine the group ID and user ID info
+    group_id=$(id -g "$username")
+    user_id_info=$(finger "$username" 2>/dev/null | awk -F: 'NR==1 {print $3}')
+
+    # Print the story for each user
+    echo "The user $username is part of the $group_id gang, lives in $home and rides $shell. $uid's place is protected by the passcode x, more info about the user here: $user_id_info"
+done < /etc/passwd
